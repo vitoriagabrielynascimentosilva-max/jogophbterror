@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Cemitério da Igualdade - Noite de Terror</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- TELA INICIAL -->
+<div id="tela-inicial" class="tela ativa">
+  <div class="ornamento-topo">✟ ☩ ✟</div>
+  <h1 class="titulo-jogo">CEMITÉRIO<br>DA IGUALDADE</h1>
+  <p class="subtitulo">~ Parnaíba, Piauí ~</p>
+  <p class="frase-entrada">"Algumas histórias nunca devem ser esquecidas..."</p>
+  <div class="ornamento">❦ ☠ ❦</div>
+  <button class="btn btn-principal" onclick="mostrarHistoria()">ENTRAR NO CEMITÉRIO</button>
+  <button class="btn btn-secundario" onclick="mostrarCreditos()">CRÉDITOS</button>
+  <div class="ornamento-base">⚜ ⚰ ⚜</div>
+</div>
+
+<!-- TELA DE HISTÓRIA -->
+<div id="tela-historia" class="tela">
+  <div class="scroll-historia">
+    <h2>✟ A História do Cemitério ✟</h2>
+    <div class="texto-historia">
+      <p>Fundado em <b>1859</b>, no auge do <b>Período Imperial Brasileiro</b>, o <b>Cemitério da Igualdade</b> é um dos mais antigos e importantes cemitérios do Piauí, localizado na cidade de <b>Parnaíba</b>.</p>
+      <p>Seu nome remete ao princípio cristão de que, diante da morte, <b>todos são iguais</b> — ricos e pobres, senhores e escravos, santos e pecadores.</p>
+      <p>O cemitério abriga verdadeiras obras de <b>arte tumular</b>: anjos de pedra, obeliscos, capelas em estilo neoclássico e esculturas barrocas que misturam o sagrado e o profano.</p>
+      <p>Entre seus túmulos repousa <b>Luíza Amélia de Queiroz</b>, considerada a <b>primeira poetisa do Piauí</b>, cuja pena eternizou versos de dor e saudade.</p>
+      <p>Dizem os mais antigos que, nas noites de lua nova, <b>algo desperta</b> entre as lápides... figuras que não deveriam caminhar, vozes que sussurram em latim, e um mal antigo que aguarda quem ousar cruzar seus portões.</p>
+      <p class="aviso">VOCÊ ACORDOU PRESO DENTRO DO CEMITÉRIO.<br>ENCONTRE A SAÍDA ANTES QUE ELES TE ENCONTREM.<br><b>ESCONDA-SE ENTRE AS LÁPIDES.</b></p>
+    </div>
+    <button class="btn btn-principal" onclick="iniciarJogo()">✟ ENTRAR NO CEMITÉRIO ✟</button>
+  </div>
+</div>
+
+<!-- TELA DE CRÉDITOS -->
+<div id="tela-creditos" class="tela">
+  <h2>✟ Créditos ✟</h2>
+  <p><b>Jogo:</b> Cemitério da Igualdade - Noite de Terror</p>
+  <p><b>Inspiração:</b> Evil Dead, Barroco Mineiro, Macabro Latino</p>
+  <p><b>Local:</b> Parnaíba - PI</p>
+  <p><b>Desenvolvimento:</b> HTML5, CSS3, JavaScript (Raycasting)</p>
+  <p class="frase-entrada">"Memento Mori"</p>
+  <button class="btn btn-secundario" onclick="voltarInicio()">VOLTAR</button>
+</div>
+
+<!-- TELA DO JOGO -->
+<div id="tela-jogo" class="tela">
+  <canvas id="gameCanvas"></canvas>
+  
+  <!-- HUD -->
+  <div id="hud">
+    <div class="hud-item">❤ VIDA: <span id="vida">100</span></div>
+    <div class="hud-item">🕯 PISTAS: <span id="pistas">0</span>/4</div>
+    <div class="hud-item">💀 KILLS: <span id="kills">0</span></div>
+  </div>
+  
+  <!-- Mensagem de esconderijo -->
+  <div id="msg-escondido" class="msg-oculta">🕯 ESCONDIDO ENTRE AS LÁPIDES 🕯</div>
+  
+  <!-- Mensagem de interação -->
+  <div id="msg-interacao" class="msg-oculta">Pressione E para interagir</div>
+  
+  <!-- Mensagem de pista -->
+  <div id="msg-pista" class="msg-oculta"></div>
+  
+  <!-- Menu do jogo -->
+  <div id="menu-jogo">
+    <button class="btn-mini" onclick="mostrarMapa()">🗺 MAPA</button>
+    <button class="btn-mini" onclick="mostrarPistas()">📜 PISTAS</button>
+    <button class="btn-mini" onclick="pausarJogo()">⏸ PAUSAR</button>
+    <button class="btn-mini" onclick="sairJogo()">✟ SAIR</button>
+  </div>
+  
+  <!-- Controles Mobile -->
+  <div id="controles-mobile">
+    <div id="joystick">
+      <button class="btn-dir" data-dir="cima" ontouchstart="moverInicio('cima',event)" ontouchend="moverFim('cima',event)">▲</button>
+      <div class="linha-horizontal">
+        <button class="btn-dir" data-dir="esquerda" ontouchstart="moverInicio('esquerda',event)" ontouchend="moverFim('esquerda',event)">◄</button>
+        <button class="btn-dir btn-central" ontouchstart="pular()">⤴</button>
+        <button class="btn-dir" data-dir="direita" ontouchstart="moverInicio('direita',event)" ontouchend="moverFim('direita',event)">►</button>
+      </div>
+      <button class="btn-dir" data-dir="baixo" ontouchstart="moverInicio('baixo',event)" ontouchend="moverFim('baixo',event)">▼</button>
+    </div>
+    <div id="rotacao-mobile">
+      <button class="btn-rot" ontouchstart="rotacionarInicio('esq',event)" ontouchend="rotacionarFim('esq',event)">↺</button>
+      <button class="btn-rot" ontouchstart="rotacionarInicio('dir',event)" ontouchend="rotacionarFim('dir',event)">↻</button>
+      <button class="btn-rot btn-interagir" ontouchstart="interagir()">✟</button>
+    </div>
+  </div>
+  
+  <!-- Modal de pista -->
+  <div id="modal-pista" class="modal oculto">
+    <div class="modal-conteudo">
+      <h3 id="titulo-pista">✟ Pista Encontrada ✟</h3>
+      <p id="texto-pista"></p>
+      <button class="btn btn-principal" onclick="fecharModal()">FECHAR</button>
+    </div>
+  </div>
+  
+  <!-- Modal de mapa -->
+  <div id="modal-mapa" class="modal oculto">
+    <div class="modal-conteudo">
+      <h3>🗺 Mapa do Cemitério</h3>
+      <canvas id="miniMapa" width="300" height="300"></canvas>
+      <button class="btn btn-principal" onclick="fecharModal()">FECHAR</button>
+    </div>
+  </div>
+  
+  <!-- Modal de pistas -->
+  <div id="modal-pistas-lista" class="modal oculto">
+    <div class="modal-conteudo">
+      <h3>📜 Pistas Coletadas</h3>
+      <div id="lista-pistas"></div>
+      <button class="btn btn-principal" onclick="fecharModal()">FECHAR</button>
+    </div>
+  </div>
+</div>
+
+<!-- Tela de Game Over -->
+<div id="tela-gameover" class="tela">
+  <h1 class="titulo-gameover">VOCÊ MORREU</h1>
+  <p class="frase-entrada">O cemitério reclamou mais uma alma...</p>
+  <p>Pontuação: <span id="pontuacao-final">0</span></p>
+  <button class="btn btn-principal" onclick="reiniciarJogo()">TENTAR NOVAMENTE</button>
+  <button class="btn btn-secundario" onclick="voltarInicio()">MENU INICIAL</button>
+</div>
+
+<!-- Tela de Vitória -->
+<div id="tela-vitoria" class="tela">
+  <h1 class="titulo-vitoria">VOCÊ ESCAPOU!</h1>
+  <p class="frase-entrada">Mas o cemitério jamais te esquecerá...</p>
+  <p>Pontuação Final: <span id="pontuacao-vitoria">0</span></p>
+  <button class="btn btn-principal" onclick="reiniciarJogo()">JOGAR NOVAMENTE</button>
+  <button class="btn btn-secundario" onclick="voltarInicio()">MENU</button>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
