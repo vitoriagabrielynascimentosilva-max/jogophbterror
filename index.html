@@ -291,7 +291,7 @@ body {
   color: #fff;
 }
 
-/* Controles Mobile - Visíveis ao diminuir a tela para testar */
+/* Controles Mobile */
 #controles-mobile {
   display: flex;
   position: fixed;
@@ -719,7 +719,7 @@ document.addEventListener('keyup', (e) => {
   if (e.key === 'ArrowRight') teclas['arrowright'] = false;
 });
 
-// Controles Mobile / Mouse simulado
+// Controles Mobile
 function moverInicio(dir, e) { if (e) e.preventDefault(); controlesMobile[dir] = true; if (e && e.currentTarget) e.currentTarget.classList.add('ativo'); }
 function moverFim(dir, e) { if (e) e.preventDefault(); controlesMobile[dir] = false; if (e && e.currentTarget) e.currentTarget.classList.remove('ativo'); }
 function rotacionarInicio(dir, e) { if (e) e.preventDefault(); if (dir === 'esq') controlesMobile.rotEsq = true; else controlesMobile.rotDir = true; }
@@ -1153,3 +1153,4 @@ function gameLoop() {
 </script>
 </body>
 </html>
+```[cite: 2]
